@@ -1,0 +1,57 @@
+{
+  "guilds": {
+    "1462752907114975315": {
+      "prefix": "!",
+      "welcomeChannel": "",
+      "welcomeMessage": "Welcome {user} to **{server}**! Enjoy your stay.",
+      "welcomeEnabled": false,
+      "goodbyeChannel": "",
+      "goodbyeMessage": "{user} has left **{server}**. Farewell!",
+      "goodbyeEnabled": false,
+      "logChannel": "",
+      "autoRole": "",
+      "levelingEnabled": true,
+      "announcementChannel": "",
+      "mutedRole": ""
+    }
+  },
+  "users": {},
+  "modlogs": [],
+  "announcements": [
+    {
+      "id": "ANC-MVFBLFLR",
+      "timestamp": "2026-10-19T13:58:50.943Z",
+      "guildId": "1462752907114975315",
+      "guildName": "R A V A N A S",
+      "channelId": "1501208222252404867",
+      "channelName": "📢┆ᴀɴɴᴏᴜɴᴄᴇᴍᴇɴᴛ",
+      "messageId": "1561740452112236675",
+      "title": "👑 Sovereign Announcement",
+      "content": "Greetings subjects of the realm!\n\nWe are pleased to announce our latest features, server upgrades, and automated systems. Follow server guidelines and stay vigilant!",
+      "color": "#118ab2",
+      "mention": "here",
+      "moderatorId": "WEB_DASHBOARD",
+      "authorName": "RAVANAS Imperial Broadcast"
+    },
+    {
+      "id": "ANC-MVFBINQA",
+      "timestamp": "2026-10-19T13:56:41.506Z",
+      "guildId": "1462752907114975315",
+      "guildName": "R A V A N A S",
+      "channelId": "1463065503814778966",
+      "channelName": "📜┆ʀᴜʟᴇꜱ",
+      "messageId": "1561739908765192225",
+      "title": "👑 Sovereign Announcement",
+      "content": "Greetings subjects of the realm!\n\nWe are pleased to announce our latest features, server upgrades, and automated systems. Follow server guidelines and stay vigilant!",
+      "color": "#118ab2",
+      "mention": "here",
+      "moderatorId": "WEB_DASHBOARD",
+      "authorName": "RAVANAS Imperial Broadcast"
+    }
+  ],
+  "settings": {
+    "botName": "RAVANAS",
+    "adminSecret": "ravanas-secret-key",
+    "defaultPrefix": "!"
+  }
+}

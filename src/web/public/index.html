@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAVANAS • Discord Sovereign & Web Console</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">👑</div>
+            <div class="brand-text">
+                <h1>RAVANAS</h1>
+                <span>Sovereign Bot</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <a class="nav-item active" data-tab="overview">
+                <span class="nav-icon">📊</span>
+                <span>Overview & Stats</span>
+            </a>
+            <a class="nav-item" data-tab="announcements">
+                <span class="nav-icon">📢</span>
+                <span>Announcement Studio</span>
+            </a>
+            <a class="nav-item" data-tab="moderation">
+                <span class="nav-icon">🛡️</span>
+                <span>Moderation & Logs</span>
+            </a>
+            <a class="nav-item" data-tab="settings">
+                <span class="nav-icon">⚙️</span>
+                <span>Server Settings</span>
+            </a>
+            <a class="nav-item" data-tab="commands">
+                <span class="nav-icon">⚡</span>
+                <span>Commands Catalog</span>
+            </a>
+            <a class="nav-item" data-tab="leaderboard">
+                <span class="nav-icon">🏆</span>
+                <span>Leaderboards</span>
+            </a>
+            <a class="nav-item" data-tab="setup">
+                <span class="nav-icon">🔑</span>
+                <span>Setup & Credentials</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <img id="sidebar-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" class="bot-avatar" alt="Avatar">
+            <div class="bot-info">
+                <div class="bot-name" id="sidebar-bot-name">RAVANAS</div>
+                <div class="bot-status-tag">
+                    <span class="status-dot" id="sidebar-status-dot"></span>
+                    <span id="sidebar-status-text">Connecting...</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-wrapper">
+        <!-- Top Header -->
+        <header class="top-header">
+            <div class="page-title">
+                <h2 id="header-title">Overview & Operations</h2>
+                <p id="header-desc">Real-time status, health metrics, and gateway connectivity.</p>
+            </div>
+            <div class="header-actions">
+                <a id="btn-invite" href="#" target="_blank" class="btn btn-discord">
+                    <span>➕ Add RAVANAS to Server</span>
+                </a>
+                <button id="btn-refresh" class="btn btn-secondary">
+                    <span>🔄 Refresh</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- TAB 1: OVERVIEW -->
+        <section id="tab-overview" class="tab-content active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Bot Status</div>
+                    <div class="stat-value" id="stat-status">Checking...</div>
+                    <div class="stat-sub" id="stat-status-sub">Gateway Health</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Ping Latency</div>
+                    <div class="stat-value" id="stat-ping">-- ms</div>
+                    <div class="stat-sub">WebSocket RTT</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Connected Servers</div>
+                    <div class="stat-value" id="stat-guilds">0</div>
+                    <div class="stat-sub">Active Guilds</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Subjects Governed</div>
+                    <div class="stat-value" id="stat-users">0</div>
+                    <div class="stat-sub">Cached Members</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Uptime</div>
+                    <div class="stat-value" id="stat-uptime">0m</div>
+                    <div class="stat-sub">Continuous Runtime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Memory</div>
+                    <div class="stat-value" id="stat-memory">0 MB</div>
+                    <div class="stat-sub">Heap Allocated</div>
+                </div>
+            </div>
+
+            <!-- Server Selector Quick Cards -->
+            <div class="card">
+                <div class="card-title">🏰 Connected Discord Servers</div>
+                <div class="card-subtitle">Servers where RAVANAS holds administrative or moderation presence.</div>
+                <div id="overview-guilds-list" style="display: flex; gap: 16px; flex-wrap: wrap;">
+                    <p style="color: var(--text-muted);">No servers detected yet or bot is not connected.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: ANNOUNCEMENT STUDIO -->
+        <section id="tab-announcements" class="tab-content">
+            <div class="studio-grid">
+                <!-- Announcement Form -->
+                <div class="card">
+                    <div class="card-title">📢 Broadcast Studio</div>
+                    <div class="card-subtitle">Design rich, embedded official announcements and broadcast them to any channel.</div>
+
+                    <form id="announcement-form">
+                        <div class="form-group">
+                            <label class="form-label">Target Server</label>
+                            <select id="anc-guild" class="form-select" required>
+                                <option value="">Select a server...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Target Channel</label>
+                            <select id="anc-channel" class="form-select" required>
+                                <option value="">Select target server first...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Notification Mention</label>
+                            <select id="anc-mention" class="form-select">
+                                <option value="none">None (Silent)</option>
+                                <option value="everyone">@everyone (Entire Server)</option>
+                                <option value="here">@here (Online Members)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Announcement Title</label>
+                            <input type="text" id="anc-title" class="form-input" placeholder="e.g. ⚔️ Grand Realm Updates & Rules" value="👑 Sovereign Announcement" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Author Name</label>
+                            <input type="text" id="anc-author" class="form-input" placeholder="e.g. RAVANAS High Command" value="RAVANAS Imperial Broadcast">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Message Content (Markdown Supported)</label>
+                            <textarea id="anc-content" class="form-textarea" placeholder="Write your announcement details here..." required>Greetings subjects of the realm!
+
+We are pleased to announce our latest features, server upgrades, and automated systems. Follow server guidelines and stay vigilant!</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Accent Theme Color</label>
+                            <div class="color-presets">
+                                <div class="color-dot active" style="background: #e63946;" data-color="#e63946" title="Crimson"></div>
+                                <div class="color-dot" style="background: #ffd166;" data-color="#ffd166" title="Gold"></div>
+                                <div class="color-dot" style="background: #118ab2;" data-color="#118ab2" title="Cyber Blue"></div>
+                                <div class="color-dot" style="background: #06d6a0;" data-color="#06d6a0" title="Emerald"></div>
+                                <div class="color-dot" style="background: #7209b7;" data-color="#7209b7" title="Royal"></div>
+                            </div>
+                            <input type="text" id="anc-color" class="form-input" style="margin-top: 10px;" value="#e63946">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Banner Image URL (Optional)</label>
+                            <input type="url" id="anc-image" class="form-input" placeholder="https://example.com/banner.png">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Thumbnail URL (Optional)</label>
+                            <input type="url" id="anc-thumbnail" class="form-input" placeholder="https://example.com/icon.png">
+                        </div>
+
+                        <button type="submit" id="btn-send-announcement" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px;">
+                            <span>🚀 Broadcast Announcement to Discord</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Live Discord Preview Box -->
+                <div>
+                    <div class="card">
+                        <div class="card-title">👁️ Live Discord Preview</div>
+                        <div class="card-subtitle">Real-time simulation of how this announcement renders in Discord.</div>
+
+                        <div class="discord-preview-box">
+                            <div class="discord-msg-header">
+                                <img id="preview-bot-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" class="discord-msg-avatar" alt="Bot Avatar">
+                                <div>
+                                    <span class="discord-msg-user" id="preview-bot-name">RAVANAS</span>
+                                    <span class="discord-bot-badge">BOT</span>
+                                    <span class="discord-msg-time">Today at 12:00 PM</span>
+                                </div>
+                            </div>
+
+                            <div id="preview-mention-container">
+                                <!-- Mention tag dynamically shown here -->
+                            </div>
+
+                            <div class="discord-embed-card" id="preview-embed">
+                                <div class="embed-author" id="preview-author-box">
+                                    <span id="preview-author-text">RAVANAS Imperial Broadcast</span>
+                                </div>
+                                <div class="embed-title" id="preview-title">👑 Sovereign Announcement</div>
+                                <div class="embed-desc" id="preview-desc">Greetings subjects of the realm!</div>
+                                <img id="preview-image" class="embed-image" src="" alt="Banner">
+                                <div class="embed-footer">
+                                    <span>Announced by RAVANAS • Official Broadcast</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Announcements History -->
+                    <div class="card">
+                        <div class="card-title">📜 Broadcast Log</div>
+                        <div class="card-subtitle">Recent announcements dispatched through RAVANAS.</div>
+                        <div id="recent-announcements-list">
+                            <p style="color: var(--text-muted); font-size: 13px;">No announcements logged yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: MODERATION & LOGS -->
+        <section id="tab-moderation" class="tab-content">
+            <div class="studio-grid">
+                <!-- Direct Moderation Console -->
+                <div class="card">
+                    <div class="card-title">⚖️ Executive Moderation Authority</div>
+                    <div class="card-subtitle">Execute administrative disciplinary actions instantly from the browser.</div>
+
+                    <form id="mod-action-form">
+                        <div class="form-group">
+                            <label class="form-label">Target Server</label>
+                            <select id="mod-guild" class="form-select" required>
+                                <option value="">Select server...</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Target User ID (Discord Snowflake)</label>
+                            <input type="text" id="mod-target" class="form-input" placeholder="e.g. 123456789012345678" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Disciplinary Action</label>
+                            <select id="mod-action" class="form-select" required>
+                                <option value="WARN">⚠️ Issue Warning</option>
+                                <option value="TIMEOUT">⏳ Timeout / Mute</option>
+                                <option value="KICK">👢 Kick Member</option>
+                                <option value="BAN">🔨 Ban Member</option>
+                                <option value="UNBAN">🕊️ Lift Ban (Unban)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="mod-duration-group" style="display: none;">
+                            <label class="form-label">Timeout Duration (Minutes)</label>
+                            <input type="number" id="mod-duration" class="form-input" value="15" min="1" max="40320">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Disciplinary Reason</label>
+                            <input type="text" id="mod-reason" class="form-input" placeholder="Reason for action..." value="Disciplinary action ordered via Web Console">
+                        </div>
+
+                        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                            <span>⚡ Execute Authority</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Mod Audit Logs Table -->
+                <div class="card" style="grid-column: 1 / -1;">
+                    <div class="card-title">📋 Live Moderation Audit Log</div>
+                    <div class="card-subtitle">Permanent record of bans, kicks, timeouts, warnings, and purges.</div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Timestamp</th>
+                                    <th>Action</th>
+                                    <th>Target ID</th>
+                                    <th>Moderator</th>
+                                    <th>Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mod-logs-tbody">
+                                <tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No recorded moderation actions yet.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: SERVER SETTINGS -->
+        <section id="tab-settings" class="tab-content">
+            <div class="card" style="max-width: 800px;">
+                <div class="card-title">⚙️ Guild Automation & Configuration</div>
+                <div class="card-subtitle">Configure greetings, departures, auto-roles, and logging channels.</div>
+
+                <div class="form-group">
+                    <label class="form-label">Select Guild to Configure</label>
+                    <select id="config-guild-select" class="form-select">
+                        <option value="">Select a server...</option>
+                    </select>
+                </div>
+
+                <form id="config-form" style="display: none;">
+                    <h3 style="margin: 20px 0 10px 0; font-size: 16px; color: var(--gold);">👋 Welcome Greeting System</h3>
+                    <div class="form-group">
+                        <label class="form-label"><input type="checkbox" id="cfg-welcome-enabled"> Enable Welcome Greetings</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Welcome Channel</label>
+                        <select id="cfg-welcome-channel" class="form-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Welcome Message (Tags: {user}, {server}, {members})</label>
+                        <textarea id="cfg-welcome-msg" class="form-textarea" rows="2"></textarea>
+                    </div>
+
+                    <h3 style="margin: 20px 0 10px 0; font-size: 16px; color: var(--primary);">🚪 Departure Farewell System</h3>
+                    <div class="form-group">
+                        <label class="form-label"><input type="checkbox" id="cfg-goodbye-enabled"> Enable Farewell Notifications</label>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Goodbye Channel</label>
+                        <select id="cfg-goodbye-channel" class="form-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Goodbye Message</label>
+                        <textarea id="cfg-goodbye-msg" class="form-textarea" rows="2"></textarea>
+                    </div>
+
+                    <h3 style="margin: 20px 0 10px 0; font-size: 16px; color: var(--accent-blue);">🛡️ Server Governance & Logging</h3>
+                    <div class="form-group">
+                        <label class="form-label">Mod Audit Log Channel</label>
+                        <select id="cfg-log-channel" class="form-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Auto-Role on Join</label>
+                        <select id="cfg-autorole" class="form-select"></select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><input type="checkbox" id="cfg-leveling-enabled" checked> Enable Leveling & XP Progression</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span>💾 Save Guild Configuration</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- TAB 5: COMMANDS CATALOG -->
+        <section id="tab-commands" class="tab-content">
+            <div class="card">
+                <div class="card-title">⚡ RAVANAS Command Codex</div>
+                <div class="card-subtitle">All slash commands available inside Discord and through the system.</div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;" id="commands-list-container">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 6: LEADERBOARDS -->
+        <section id="tab-leaderboard" class="tab-content">
+            <div class="card">
+                <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>🏆 Realm Hall of Fame</span>
+                    <div>
+                        <button class="btn btn-secondary" id="btn-lb-xp">⭐ XP Ranks</button>
+                        <button class="btn btn-secondary" id="btn-lb-eco">🪙 Wealth Ranks</button>
+                    </div>
+                </div>
+                <div class="card-subtitle">The most accomplished and wealthy champions in the dominion of RAVANAS.</div>
+
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr id="lb-table-head">
+                                <th>Rank</th>
+                                <th>User ID</th>
+                                <th>Level</th>
+                                <th>XP Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lb-tbody">
+                            <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No player records found.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 7: SETUP & CREDENTIALS -->
+        <section id="tab-setup" class="tab-content">
+            <div class="card" style="max-width: 700px;">
+                <div class="card-title">🔑 Bot Token & Deployment Assistant</div>
+                <div class="card-subtitle">Connect RAVANAS directly to Discord and register slash commands.</div>
+
+                <form id="credentials-form">
+                    <div class="form-group">
+                        <label class="form-label">Discord Bot Token</label>
+                        <input type="password" id="input-token" class="form-input" placeholder="Paste your Discord Bot Token here" required>
+                        <small style="color: var(--text-muted); display: block; margin-top: 4px;">Found in Discord Developer Portal > Bot > Token</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Discord Client ID (Application ID)</label>
+                        <input type="text" id="input-client-id" class="form-input" placeholder="e.g. 123456789012345678" required>
+                        <small style="color: var(--text-muted); display: block; margin-top: 4px;">Found in Discord Developer Portal > General Information > Application ID</small>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-bottom: 24px;">
+                        <span>💾 Save & Connect RAVANAS</span>
+                    </button>
+                </form>
+
+                <hr style="border-color: var(--border-color); margin: 24px 0;">
+
+                <div class="card-title">⚡ Register Discord Slash Commands</div>
+                <p style="color: var(--text-secondary); font-size: 13px; margin-bottom: 14px;">
+                    Instantly sync all 20+ slash commands (`/announce`, `/ban`, `/warn`, `/interact`, etc.) with the Discord REST API.
+                </p>
+                <button id="btn-deploy-commands" class="btn btn-secondary">
+                    <span>🚀 Deploy Slash Commands to Discord</span>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
